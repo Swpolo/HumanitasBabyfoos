@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/player_rank"
+        style="@style/player_brief_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Rank"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/player_name"
+        style="@style/player_brief_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="PlayerName"
+        app:layout_constraintBottom_toBottomOf="@+id/player_rank"
+        app:layout_constraintStart_toEndOf="@+id/player_rank" />
+
+    <TextView
+        android:id="@+id/player_score"
+        style="@style/player_brief_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0/0 : 0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/player_name"
+        app:layout_constraintStart_toEndOf="@+id/player_name" />
+
+</android.support.constraint.ConstraintLayout>
