@@ -6,6 +6,11 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Player {
+
+    public Player(String name) {
+        this.name = name;
+    }
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 
