@@ -21,10 +21,10 @@
     <TextView
         android:id="@+id/player_name"
         style="@style/player_brief_style"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="PlayerName"
+        android:text="Player"
         app:layout_constraintBottom_toBottomOf="@+id/player_rank"
         app:layout_constraintStart_toEndOf="@+id/player_rank" />
 

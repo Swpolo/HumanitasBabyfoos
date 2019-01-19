@@ -24,8 +24,8 @@ public class MainActivity
     private BabyfootDatabase db;
     private PlayerDao playerDao;
     private MatchDao matchDao;
-    public static List<Player> players;
-    private List<Match> matches;
+    public static List<Player> playerList;
+    private List<Match> matchList;
 
     RecyclerView playersView;
     PlayerRecyclerViewAdapter playerAdapter;
@@ -38,8 +38,8 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        matches = new ArrayList<>();
-        players = new ArrayList<>();
+        matchList = new ArrayList<>();
+        playerList = new ArrayList<>();
 
         playersView = findViewById(R.id.players_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -47,7 +47,7 @@ public class MainActivity
         playersView.setItemAnimator(new DefaultItemAnimator());
         playersView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        playerAdapter = new PlayerRecyclerViewAdapter(players);
+        playerAdapter = new PlayerRecyclerViewAdapter(playerList);
         playersView.setAdapter(playerAdapter);
 
         addPlayerDialog = new AddPlayerDialog();
@@ -96,23 +96,35 @@ public class MainActivity
     }
 
     private void updateMatches() {
-        if(matches == null) return;
+        updateMatches(null);
+    }
+
+    private void updateMatches(final Match match) {
+
+        if(matchList == null) return;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                matches.clear();
-                matches.addAll(matchDao.getAll());
+                if(match != null) matchDao.insertAll(match);
+                matchList.clear();
+                matchList.addAll(matchDao.getAll());
             }
         }).start();
+
     }
 
     private void updatePlayers() {
-        if(players == null) return;
+        updatePlayers(null);
+    }
+
+    private void updatePlayers(final Player... players) {
+        if(playerList == null) return;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                players.clear();
-                players.addAll(playerDao.getAll());
+                if(players != null) playerDao.updatePlayers(players);
+                playerList.clear();
+                playerList.addAll(playerDao.getAll());
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -149,13 +161,93 @@ public class MainActivity
 
     @Override
     public void onAddMatchPositiveClick(final String match) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Match newMatch = new Match();
+                String[] datas = match.split(";");
+                if(datas.length != 6) {
+                    showToast("Couldn't add match: missing parameters");
+                    return;
+                }
+                try {
+                    newMatch.scoreBlue = Integer.parseInt(datas[0]);
+                    newMatch.scoreRed = Integer.parseInt(datas[3]);
+                } catch (NumberFormatException e) {
+                    showToast("Couldn't add match: invalid score");
+                    return;
+                }
+                if(
+                    // If no winner
+                        (newMatch.scoreBlue != 10 && newMatch.scoreRed != 10) ||
+
+                                // If two winners ._.
+                                (newMatch.scoreBlue == 10 && newMatch.scoreRed == 10)
+                ){
+                    showToast("Couldn't add match: invalid score");
+                    return;
+                }
+                Player attackBlue = null;
+                Player defenceBlue = null;
+                Player attackRed = null;
+                Player defenceRed = null;
+
+                try {
+                    attackBlue = playerDao.getPlayerByName(datas[1]).get(0);
+                    defenceBlue = playerDao.getPlayerByName(datas[2]).get(0);
+                    attackRed = playerDao.getPlayerByName(datas[4]).get(0);
+                    defenceRed = playerDao.getPlayerByName(datas[5]).get(0);
+                } catch(ArrayIndexOutOfBoundsException e) {
+                    showToast("Couldn't add match: invalids players");
+                }
+
+                try {
+                    int[] ids = {
+                            attackBlue.id,
+                            defenceBlue.id,
+                            attackRed.id,
+                            defenceRed.id
+                    };
+
+                    for (int i = 0; i < 4; i++) {
+                        for (int j = i + 1; j < 4; j++) {
+                            if(ids[i] == ids[j]) {
+                                showToast("Couldn't add match: two or more players are the same");
+                                return;
+                            }
+                        }
+                    }
+
+
+                    if (newMatch.scoreBlue == 10) {
+                        attackBlue.matchWon++;
+                        defenceBlue.matchWon++;
+                    } else {
+                        attackRed.matchWon++;
+                        defenceRed.matchWon++;
+                    }
+                    attackBlue.matchPlayed++;
+                    defenceBlue.matchPlayed++;
+                    attackRed.matchPlayed++;
+                    defenceRed.matchPlayed++;
+                } catch (NullPointerException e) {
+                    showToast("Couldn't add match: invalids players");
+                }
+
+                newMatch.timestamp = System.currentTimeMillis();
+
+                updateMatches(newMatch);
+                updatePlayers(attackBlue, defenceBlue, attackRed, defenceRed);
+            }
+        }).start();
+    }
+
+    private void showToast(final String message) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Add Match " + match, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
-        updateMatches();
-        updatePlayers();
     }
 }

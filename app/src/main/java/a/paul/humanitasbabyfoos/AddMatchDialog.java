@@ -61,8 +61,8 @@ public class AddMatchDialog extends DialogFragment {
 
         ArrayList<String> playersList = new ArrayList<>();
 
-        for(int i = 0; i < MainActivity.players.size(); i++) {
-            playersList.add(MainActivity.players.get(i).name);
+        for(int i = 0; i < MainActivity.playerList.size(); i++) {
+            playersList.add(MainActivity.playerList.get(i).name);
         }
         ArrayAdapter<String> playersAdapter = new ArrayAdapter<>(this.getActivity(),
                 android.R.layout.simple_dropdown_item_1line, playersList);
