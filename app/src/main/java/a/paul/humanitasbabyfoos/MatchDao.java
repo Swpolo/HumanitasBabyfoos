@@ -20,6 +20,11 @@ public interface MatchDao {
             "OR defence_red = (:playerId)")
     List<Match> getByPlayer(int playerId);
 
+    @Query("SELECT * " +
+            "FROM `match` " +
+            "WHERE timestamp  >= (:startDay) AND  timestamp < (:endDay)")
+    List<Match> getByPeriod(long startDay, long endDay);
+
     @Insert
     void insertAll(Match... matches);
 

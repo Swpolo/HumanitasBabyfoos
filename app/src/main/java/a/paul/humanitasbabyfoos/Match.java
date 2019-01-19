@@ -10,6 +10,9 @@ public class Match {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    @ColumnInfo(name = "timestamp")
+    public long timestamp;
+
     @ForeignKey(entity = Player.class, parentColumns = "id", childColumns = "attack_blue")
     @ColumnInfo(name = "attack_blue")
     public int attackBlue;

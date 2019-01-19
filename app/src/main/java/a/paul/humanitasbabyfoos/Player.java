@@ -6,6 +6,11 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Player {
+
+    public Player(String name) {
+        this.name = name;
+    }
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -23,4 +28,10 @@ public class Player {
 
     @ColumnInfo(name = "as_attacker")
     public int asAttacker;
+
+    @ColumnInfo(name = "initial_wins")
+    public int initialWins;
+
+    @ColumnInfo(name = "initial_matches")
+    public int initialMatches;
 }

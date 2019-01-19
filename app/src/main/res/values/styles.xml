@@ -7,5 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    
+    <style name="player_brief_style" parent="AppTheme">
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
