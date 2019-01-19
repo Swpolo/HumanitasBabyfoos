@@ -28,4 +28,10 @@ public class Player {
 
     @ColumnInfo(name = "as_attacker")
     public int asAttacker;
+
+    @ColumnInfo(name = "initial_wins")
+    public int initialWins;
+
+    @ColumnInfo(name = "initial_matches")
+    public int initialMatches;
 }
