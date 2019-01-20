@@ -39,7 +39,15 @@ public class AddPlayerDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         EditText editText =
                                 ((Dialog) dialogInterface).findViewById(R.id.dialog_player_name);
-                        listener.onAddPlayerPositiveClick(editText.getText().toString());
+                        String name = editText.getText().toString();
+                        if(name.isEmpty()) return;
+                        if(name.length() > 1) {
+                            name = name.substring(0,1).toUpperCase() +
+                                    name.substring(1).toLowerCase();
+                        } else {
+                            name = name.toUpperCase();
+                        }
+                        listener.onAddPlayerPositiveClick(name);
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, null);

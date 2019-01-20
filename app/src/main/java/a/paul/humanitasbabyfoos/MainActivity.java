@@ -14,11 +14,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity
         extends AppCompatActivity
         implements AddPlayerDialog.Listener,
+                    UpdatePlayerDialog.Listener,
                     AddMatchDialog.Listener {
 
     private BabyfootDatabase db;
@@ -31,6 +34,7 @@ public class MainActivity
     PlayerRecyclerViewAdapter playerAdapter;
 
     AddPlayerDialog addPlayerDialog;
+    UpdatePlayerDialog updatePlayerDialog;
     AddMatchDialog addMatchDialog;
 
     @Override
@@ -51,6 +55,7 @@ public class MainActivity
         playersView.setAdapter(playerAdapter);
 
         addPlayerDialog = new AddPlayerDialog();
+        updatePlayerDialog = new UpdatePlayerDialog();
         addMatchDialog = new AddMatchDialog();
     }
 
@@ -85,6 +90,10 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.add_player:
                 addPlayer();
+                break;
+
+            case R.id.update_player:
+                updatePlayer();
                 break;
 
             case R.id.add_match:
@@ -125,6 +134,14 @@ public class MainActivity
                 if(players != null) playerDao.updatePlayers(players);
                 playerList.clear();
                 playerList.addAll(playerDao.getAll());
+                Collections.sort(playerList, new Comparator<Player>() {
+                    @Override
+                    public int compare(Player o1, Player o2) {
+                        float ratioO1 = o1.matchWon/(float)o1.matchPlayed;
+                        float ratioO2 = o2.matchWon/(float)o2.matchPlayed;
+                        return Float.compare(ratioO2, ratioO1);
+                    }
+                });
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -140,21 +157,57 @@ public class MainActivity
         addPlayerDialog.show(getSupportFragmentManager(), "add_player");
     }
 
+    private void updatePlayer() {
+        updatePlayerDialog.show(getSupportFragmentManager(), "update_player");
+    }
+
     private void addMatch() {
         addMatchDialog.show(getSupportFragmentManager(), "add_match");
     }
 
     @Override
     public void onAddPlayerPositiveClick(final String playerName) {
+        if(playerName.isEmpty()) {
+            return;
+        }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if (!playerDao.getPlayerByName(playerName).isEmpty()) {
-                    // TODO: notify that name is already taken
+                    showToast("That name is already taken");
                     return;
                 }
                 playerDao.insertAll(new Player(playerName));
                 updatePlayers();
+            }
+        }).start();
+    }
+
+    @Override
+    public void onUpdatePlayerPositiveClick(final String oldName, final String newName) {
+        if (oldName.isEmpty()) return;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Player> players = playerDao.getPlayerByName(oldName);
+                if(players.isEmpty()) {
+                    showToast("Player not found, cannot update");
+                    return;
+                }
+                Player player = players.get(0);
+
+                players = playerDao.getPlayerByName(newName);
+                if(!players.isEmpty()) {
+                    showToast("This name is already taken, cannot update");
+                    return;
+                }
+
+                player.name = newName;
+                playerDao.updatePlayers(player);
+                updatePlayers(null);
+                showToast("Player updated");
             }
         }).start();
     }
@@ -218,7 +271,6 @@ public class MainActivity
                         }
                     }
 
-
                     if (newMatch.scoreBlue == 10) {
                         attackBlue.matchWon++;
                         defenceBlue.matchWon++;
@@ -226,10 +278,19 @@ public class MainActivity
                         attackRed.matchWon++;
                         defenceRed.matchWon++;
                     }
+
                     attackBlue.matchPlayed++;
+                    attackBlue.asAttacker++;
+
                     defenceBlue.matchPlayed++;
+                    defenceBlue.asDefencer++;
+
                     attackRed.matchPlayed++;
+                    attackRed.asAttacker++;
+
                     defenceRed.matchPlayed++;
+                    defenceRed.asDefencer++;
+
                 } catch (NullPointerException e) {
                     showToast("Couldn't add match: invalids players");
                 }

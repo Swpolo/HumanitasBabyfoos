@@ -3,8 +3,11 @@
 
     <item
         android:id="@+id/add_player"
-        android:title="New Player" />
+        android:title="@string/menu_title_new_player" />
+    <item
+        android:id="@+id/update_player"
+        android:title="@string/menu_title_update_player" />
     <item
         android:id="@+id/add_match"
-        android:title="New Match" />
+        android:title="@string/menu_title_new_match" />
 </menu>

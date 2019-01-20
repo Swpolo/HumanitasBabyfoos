@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">HumanitasBabyfoos</string>
-    <string name="dialog_add_player_message">Create new player</string>
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_add_player_message">Create new player</string>
+    <string name="dialog_update_player_message">Update Player</string>
     <string name="dialog_add_match_message">New Match</string>
     <string name="blue_score_base">Blue Score: </string>
     <string name="red_score_base">Red Score: </string>
+    <string name="menu_title_update_player">Update Player</string>
+    <string name="menu_title_new_player">New Player</string>
+    <string name="menu_title_new_match">New Match</string>
 </resources>
