@@ -13,7 +13,7 @@ import android.widget.EditText;
 public class AddPlayerDialog extends DialogFragment {
 
     public interface Listener {
-        void onAddPlayerPositiveClick(String playerName);
+        void onAddPlayerPositiveClick(String playerName, int initialWin, int initialMatch);
     }
     private Listener listener;
 
@@ -37,9 +37,11 @@ public class AddPlayerDialog extends DialogFragment {
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText editText =
-                                ((Dialog) dialogInterface).findViewById(R.id.dialog_player_name);
-                        String name = editText.getText().toString();
+                        Dialog dialog = (Dialog) dialogInterface;
+                        EditText etName = dialog.findViewById(R.id.dialog_player_name);
+                        EditText etWin = dialog.findViewById(R.id.dialog_player_win);
+                        EditText etMatch = dialog.findViewById(R.id.dialog_player_match);
+                        String name = etName.getText().toString();
                         if(name.isEmpty()) return;
                         if(name.length() > 1) {
                             name = name.substring(0,1).toUpperCase() +
@@ -47,7 +49,15 @@ public class AddPlayerDialog extends DialogFragment {
                         } else {
                             name = name.toUpperCase();
                         }
-                        listener.onAddPlayerPositiveClick(name);
+                        int initialWin = 0;
+                        int initialMatch = 0;
+
+                        try {
+                            initialWin = Integer.parseInt(etWin.getText().toString());
+                            initialMatch = Integer.parseInt(etMatch.getText().toString());
+                        } catch (NumberFormatException ignore) {}
+
+                        listener.onAddPlayerPositiveClick(name, initialWin, initialMatch);
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, null);

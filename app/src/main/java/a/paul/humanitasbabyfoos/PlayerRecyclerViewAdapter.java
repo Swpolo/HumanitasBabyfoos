@@ -48,9 +48,9 @@ public class PlayerRecyclerViewAdapter  extends RecyclerView.Adapter<PlayerRecyc
         viewHolder.rank.setText("");
         viewHolder.playerName.setText(player.name);
         viewHolder.playerScore.setText(
-                String.format(Locale.CANADA, "%d / %d : %.2f",
+                String.format(Locale.CANADA, "%3d / %3d : %3d%%",
                         player.matchWon, player.matchPlayed,
-                        player.matchWon / (float)player.matchPlayed)
+                        ((int)(player.matchWon / (float)player.matchPlayed * 100)))
         );
     }
 

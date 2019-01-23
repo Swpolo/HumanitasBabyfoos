@@ -92,9 +92,9 @@ public class MainActivity
                 addPlayer();
                 break;
 
-            case R.id.update_player:
-                updatePlayer();
-                break;
+//            case R.id.update_player:
+//                updatePlayer();
+//                break;
 
             case R.id.add_match:
                 addMatch();
@@ -166,7 +166,7 @@ public class MainActivity
     }
 
     @Override
-    public void onAddPlayerPositiveClick(final String playerName) {
+    public void onAddPlayerPositiveClick(final String playerName, final int win, final int match) {
         if(playerName.isEmpty()) {
             return;
         }
@@ -178,7 +178,10 @@ public class MainActivity
                     showToast("That name is already taken");
                     return;
                 }
-                playerDao.insertAll(new Player(playerName));
+                Player player = new Player(playerName);
+                player.matchWon = player.initialWins = win;
+                player.matchPlayed = player.initialMatches = match;
+                playerDao.insertAll(player);
                 updatePlayers();
             }
         }).start();
