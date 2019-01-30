@@ -92,9 +92,9 @@ public class MainActivity
                 addPlayer();
                 break;
 
-//            case R.id.update_player:
-//                updatePlayer();
-//                break;
+            case R.id.update_player:
+                updatePlayer();
+                break;
 
             case R.id.add_match:
                 addMatch();
