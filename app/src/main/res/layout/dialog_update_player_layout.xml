@@ -13,10 +13,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Old Player Name"
+        android:hint="@string/old_player_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Autofill" />
 
     <EditText
         android:id="@+id/dialog_update_player_new_name"
@@ -26,9 +27,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:hint="New Player Name"
+        android:hint="@string/new_player_name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_update_player_old_name" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_update_player_old_name"
+        tools:ignore="Autofill" />
 </android.support.constraint.ConstraintLayout>

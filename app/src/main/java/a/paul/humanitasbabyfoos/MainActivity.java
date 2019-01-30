@@ -123,6 +123,7 @@ public class MainActivity
     }
 
     private void updatePlayers() {
+        //noinspection ConfusingArgumentToVarargsMethod
         updatePlayers(null);
     }
 
@@ -209,6 +210,7 @@ public class MainActivity
 
                 player.name = newName;
                 playerDao.updatePlayers(player);
+                //noinspection ConfusingArgumentToVarargsMethod
                 updatePlayers(null);
                 showToast("Player updated");
             }

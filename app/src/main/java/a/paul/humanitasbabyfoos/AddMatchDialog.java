@@ -70,13 +70,13 @@ public class AddMatchDialog extends DialogFragment {
         final AutoCompleteTextView blueAttacker = dialog.findViewById(R.id.blue_attacker);
         blueAttacker.setAdapter(playersAdapter);
 
-        final AutoCompleteTextView blueDefencer = dialog.findViewById(R.id.blue_defencer);
+        final AutoCompleteTextView blueDefencer = dialog.findViewById(R.id.blue_defender);
         blueDefencer.setAdapter(playersAdapter);
 
         final AutoCompleteTextView redAttacker = dialog.findViewById(R.id.red_attacker);
         redAttacker.setAdapter(playersAdapter);
 
-        final AutoCompleteTextView redDefencer = dialog.findViewById(R.id.red_defencer);
+        final AutoCompleteTextView redDefencer = dialog.findViewById(R.id.red_defender);
         redDefencer.setAdapter(playersAdapter);
 
         final TextView blueScoreText = dialog.findViewById(R.id.blue_score);
@@ -125,12 +125,12 @@ public class AddMatchDialog extends DialogFragment {
         ";" +
         ((EditText) dialog.findViewById(R.id.blue_attacker)).getText().toString() +
         ";" +
-        ((EditText) dialog.findViewById(R.id.blue_defencer)).getText().toString() +
+        ((EditText) dialog.findViewById(R.id.blue_defender)).getText().toString() +
         ";" +
         ((SeekBar) dialog.findViewById(R.id.red_score_bar)).getProgress() +
         ";" +
         ((EditText) dialog.findViewById(R.id.red_attacker)).getText().toString() +
         ";" +
-        ((EditText) dialog.findViewById(R.id.red_defencer)).getText().toString();
+        ((EditText) dialog.findViewById(R.id.red_defender)).getText().toString();
     }
 }

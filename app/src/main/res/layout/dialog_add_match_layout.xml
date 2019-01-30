@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -47,17 +46,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Blue Attacker..."
+        android:hint="@string/blue_attacker"
         app:layout_constraintEnd_toEndOf="@+id/blue_score_bar"
         app:layout_constraintStart_toStartOf="@+id/blue_score_bar"
         app:layout_constraintTop_toBottomOf="@+id/blue_score_bar" />
 
     <AutoCompleteTextView
-        android:id="@+id/blue_defencer"
+        android:id="@+id/blue_defender"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Blue Defencer..."
+        android:hint="@string/blue_defender"
         app:layout_constraintEnd_toEndOf="@+id/blue_attacker"
         app:layout_constraintStart_toStartOf="@+id/blue_attacker"
         app:layout_constraintTop_toBottomOf="@+id/blue_attacker" />
@@ -105,17 +104,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Red Attacker..."
+        android:hint="@string/red_attacker"
         app:layout_constraintEnd_toEndOf="@+id/red_score_bar"
         app:layout_constraintStart_toStartOf="@+id/red_score_bar"
         app:layout_constraintTop_toBottomOf="@+id/red_score_bar" />
 
     <AutoCompleteTextView
-        android:id="@+id/red_defencer"
+        android:id="@+id/red_defender"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Red Defencer..."
+        android:hint="@string/red_defender"
         app:layout_constraintEnd_toEndOf="@+id/red_attacker"
         app:layout_constraintStart_toStartOf="@+id/red_attacker"
         app:layout_constraintTop_toBottomOf="@+id/red_attacker" />
@@ -130,6 +129,6 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blue_defencer" />
+        app:layout_constraintTop_toBottomOf="@+id/blue_defender" />
 
 </android.support.constraint.ConstraintLayout>

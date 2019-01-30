@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">HumanitasBabyfoos</string>
-    <string name="dialog_ok">Ok</string>
+    <string name="app_name">Humanitas Foosball</string>
+    <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add_player_message">Create new player</string>
     <string name="dialog_update_player_message">Update Player</string>
@@ -10,4 +10,16 @@
     <string name="menu_title_update_player">Update Player</string>
     <string name="menu_title_new_player">New Player</string>
     <string name="menu_title_new_match">New Match</string>
+    <string name="blue_defender">Blue Defender…</string>
+    <string name="blue_attacker">Blue Attacker…</string>
+    <string name="red_attacker">Red Attacker…</string>
+    <string name="red_defender">Red Defender…</string>
+    <string name="rank">Rank</string>
+    <string name="player">Player</string>
+    <string name="default_stats">0/0 : 0.0</string>
+    <string name="player_name">Player Name…</string>
+    <string name="initials_wins">Initials Wins</string>
+    <string name="initial_matchs">Initial Matchs</string>
+    <string name="old_player_name">Old Player Name</string>
+    <string name="new_player_name">New Player Name</string>
 </resources>
