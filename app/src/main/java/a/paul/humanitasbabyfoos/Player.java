@@ -9,7 +9,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.score = 1500;
+        this.score = 1000;
     }
 
     @PrimaryKey(autoGenerate = true)

@@ -23,6 +23,10 @@ public class MainActivity
                     UpdatePlayerDialog.Listener,
                     AddMatchDialog.Listener {
 
+    private static final int SORT_ELO = 0;
+    private static final int SORT_RATIO = 1;
+    private int playerSort = SORT_ELO;
+
     private BabyfootDatabase db;
     private PlayerDao playerDao;
     private MatchDao matchDao;
@@ -151,14 +155,24 @@ public class MainActivity
                 if(players != null) playerDao.updatePlayers(players);
                 playersList.clear();
                 playersList.addAll(playerDao.getAll());
-                Collections.sort(playersList, new Comparator<Player>() {
-                    @Override
-                    public int compare(Player o1, Player o2) {
-                        float ratioO1 = o1.matchWon/(float)o1.matchPlayed;
-                        float ratioO2 = o2.matchWon/(float)o2.matchPlayed;
-                        return Float.compare(ratioO2, ratioO1);
-                    }
-                });
+
+                if (playerSort == SORT_ELO) {
+                    Collections.sort(playersList, new Comparator<Player>() {
+                        @Override
+                        public int compare(Player o1, Player o2) {
+                            return Integer.compare(o2.score, o1.score);
+                        }
+                    });
+                } else if (playerSort == SORT_RATIO) {
+                    Collections.sort(playersList, new Comparator<Player>() {
+                        @Override
+                        public int compare(Player o1, Player o2) {
+                            float ratioO1 = o1.matchWon / (float) o1.matchPlayed;
+                            float ratioO2 = o2.matchWon / (float) o2.matchPlayed;
+                            return Float.compare(ratioO2, ratioO1);
+                        }
+                    });
+                }
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -326,6 +340,9 @@ public class MainActivity
                 }
 
                 newMatch.timestamp = System.currentTimeMillis();
+
+                PlayerRating.computeRating(newMatch.scoreRed, newMatch.scoreBlue,
+                        attackRed, defenceRed, attackBlue, defenceBlue);
 
                 updateMatches(newMatch);
                 updatePlayers(attackBlue, defenceBlue, attackRed, defenceRed);
