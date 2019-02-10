@@ -10,7 +10,8 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
-public class PlayerRecyclerViewAdapter  extends RecyclerView.Adapter<PlayerRecyclerViewAdapter.ViewHolder> {
+public class PlayersRecyclerViewAdapter
+        extends RecyclerView.Adapter<PlayersRecyclerViewAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView rank;
@@ -27,13 +28,14 @@ public class PlayerRecyclerViewAdapter  extends RecyclerView.Adapter<PlayerRecyc
 
     private List<Player> dataset;
 
-    public PlayerRecyclerViewAdapter(List<Player> dataset) {
+    public PlayersRecyclerViewAdapter(List<Player> dataset) {
         this.dataset = dataset;
     }
 
     @NonNull
     @Override
-    public PlayerRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public PlayersRecyclerViewAdapter.ViewHolder
+    onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.player_view, viewGroup, false
@@ -43,7 +45,7 @@ public class PlayerRecyclerViewAdapter  extends RecyclerView.Adapter<PlayerRecyc
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlayerRecyclerViewAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull PlayersRecyclerViewAdapter.ViewHolder viewHolder, int i) {
         Player player = dataset.get(i);
         viewHolder.rank.setText("");
         viewHolder.playerName.setText(player.name);

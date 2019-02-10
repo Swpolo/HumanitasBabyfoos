@@ -11,4 +11,14 @@
     <style name="player_brief_style" parent="AppTheme">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="match_red_block">
+        <item name="android:background">@color/red_block_background</item>
+
+    </style>
+    <style name="match_blue_block">
+        <item name="android:background">@color/blue_block_background</item>
+
+    </style>
+
 </resources>

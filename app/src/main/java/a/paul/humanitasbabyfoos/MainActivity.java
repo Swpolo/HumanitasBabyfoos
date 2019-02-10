@@ -3,6 +3,8 @@ package a.paul.humanitasbabyfoos;
 import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,11 +29,13 @@ public class MainActivity
     private BabyfootDatabase db;
     private PlayerDao playerDao;
     private MatchDao matchDao;
-    public static List<Player> playerList;
-    private List<Match> matchList;
+    public static ArrayList<Player> playerList;
+    private ArrayList<Match> matchList;
+
+    MatchesFragment matchesFragment;
 
     RecyclerView playersView;
-    PlayerRecyclerViewAdapter playerAdapter;
+    PlayersRecyclerViewAdapter playerAdapter;
 
     AddPlayerDialog addPlayerDialog;
     UpdatePlayerDialog updatePlayerDialog;
@@ -45,13 +49,20 @@ public class MainActivity
         matchList = new ArrayList<>();
         playerList = new ArrayList<>();
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        matchesFragment = new MatchesFragment();
+        matchesFragment.setMatchesAdapter(getApplicationContext(), playerList, matchList);
+        fragmentTransaction.add(R.id.matches_fragment, matchesFragment);
+        fragmentTransaction.commit();
+
         playersView = findViewById(R.id.players_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         playersView.setLayoutManager(mLayoutManager);
         playersView.setItemAnimator(new DefaultItemAnimator());
         playersView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        playerAdapter = new PlayerRecyclerViewAdapter(playerList);
+        playerAdapter = new PlayersRecyclerViewAdapter(playerList);
         playersView.setAdapter(playerAdapter);
 
         addPlayerDialog = new AddPlayerDialog();
@@ -62,6 +73,8 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+
 
         new Thread(new Runnable() {
             @Override
@@ -117,6 +130,15 @@ public class MainActivity
                 if(match != null) matchDao.insertAll(match);
                 matchList.clear();
                 matchList.addAll(matchDao.getAll());
+                Collections.sort(matchList, new Comparator<Match>() {
+                    @Override
+                    public int compare(Match o1, Match o2) {
+                        long timestampO1 = o1.timestamp;
+                        long timestampO2 = o2.timestamp;
+                        return Long.compare(timestampO2, timestampO1);
+                    }
+                });
+                matchesFragment.updateMatch();
             }
         }).start();
 
@@ -228,6 +250,7 @@ public class MainActivity
                     showToast("Couldn't add match: missing parameters");
                     return;
                 }
+                // Save Score
                 try {
                     newMatch.scoreBlue = Integer.parseInt(datas[0]);
                     newMatch.scoreRed = Integer.parseInt(datas[3]);
@@ -235,6 +258,27 @@ public class MainActivity
                     showToast("Couldn't add match: invalid score");
                     return;
                 }
+
+                // Save Players
+                Player attackBlue = null;
+                Player defenceBlue = null;
+                Player attackRed = null;
+                Player defenceRed = null;
+                try {
+                    attackBlue = playerDao.getPlayerByName(datas[1]).get(0);
+                    defenceBlue = playerDao.getPlayerByName(datas[2]).get(0);
+                    attackRed = playerDao.getPlayerByName(datas[4]).get(0);
+                    defenceRed = playerDao.getPlayerByName(datas[5]).get(0);
+                } catch(ArrayIndexOutOfBoundsException e) {
+                    showToast("Couldn't add match: invalids players");
+                    return;
+                }
+                newMatch.attackBlue = attackBlue.id;
+                newMatch.defenceBlue = defenceBlue.id;
+                newMatch.attackRed = attackRed.id;
+                newMatch.defenceRed = defenceRed.id;
+
+
                 if(
                     // If no winner
                         (newMatch.scoreBlue != 10 && newMatch.scoreRed != 10) ||
@@ -244,19 +288,6 @@ public class MainActivity
                 ){
                     showToast("Couldn't add match: invalid score");
                     return;
-                }
-                Player attackBlue = null;
-                Player defenceBlue = null;
-                Player attackRed = null;
-                Player defenceRed = null;
-
-                try {
-                    attackBlue = playerDao.getPlayerByName(datas[1]).get(0);
-                    defenceBlue = playerDao.getPlayerByName(datas[2]).get(0);
-                    attackRed = playerDao.getPlayerByName(datas[4]).get(0);
-                    defenceRed = playerDao.getPlayerByName(datas[5]).get(0);
-                } catch(ArrayIndexOutOfBoundsException e) {
-                    showToast("Couldn't add match: invalids players");
                 }
 
                 try {
@@ -298,6 +329,7 @@ public class MainActivity
 
                 } catch (NullPointerException e) {
                     showToast("Couldn't add match: invalids players");
+                    return;
                 }
 
                 newMatch.timestamp = System.currentTimeMillis();

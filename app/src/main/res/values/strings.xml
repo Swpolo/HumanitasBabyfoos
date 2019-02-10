@@ -22,4 +22,7 @@
     <string name="initial_matchs">Initial Matchs</string>
     <string name="old_player_name">Old Player Name</string>
     <string name="new_player_name">New Player Name</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="defense">Defense</string>
+    <string name="attack">Attack</string>
 </resources>

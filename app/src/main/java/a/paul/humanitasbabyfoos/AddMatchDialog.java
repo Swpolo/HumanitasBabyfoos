@@ -79,7 +79,7 @@ public class AddMatchDialog extends DialogFragment {
         final AutoCompleteTextView redDefencer = dialog.findViewById(R.id.red_defender);
         redDefencer.setAdapter(playersAdapter);
 
-        final TextView blueScoreText = dialog.findViewById(R.id.blue_score);
+        final TextView blueScoreText = dialog.findViewById(R.id.match_view_blue_score);
         blueScoreText.setText(getText(R.string.blue_score_base) + Integer.toString(0));
         SeekBar blueScoreBar = dialog.findViewById(R.id.blue_score_bar);
         blueScoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -99,7 +99,7 @@ public class AddMatchDialog extends DialogFragment {
             }
         });
 
-        final TextView redScoreText = dialog.findViewById(R.id.red_score);
+        final TextView redScoreText = dialog.findViewById(R.id.match_view_red_score);
         redScoreText.setText(getText(R.string.red_score_base) + " " + Integer.toString(0));
         SeekBar redScoreBar = dialog.findViewById(R.id.red_score_bar);
         redScoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
