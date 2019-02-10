@@ -68,7 +68,7 @@
 
                     <TextView
                         android:id="@+id/attack_blue_name"
-                        android:layout_width="@dimen/player_name_size"
+                        android:layout_width="@dimen/player_name_size_match"
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder" />
                 </TableRow>
@@ -89,7 +89,7 @@
 
                     <TextView
                         android:id="@+id/defense_blue_name"
-                        android:layout_width="@dimen/player_name_size"
+                        android:layout_width="@dimen/player_name_size_match"
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder" />
                 </TableRow>
@@ -181,7 +181,7 @@
 
                     <TextView
                         android:id="@+id/attack_red_name"
-                        android:layout_width="@dimen/player_name_size"
+                        android:layout_width="@dimen/player_name_size_match"
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder"
                         android:textAlignment="textEnd" />
@@ -204,7 +204,7 @@
 
                     <TextView
                         android:id="@+id/defense_red_name"
-                        android:layout_width="@dimen/player_name_size"
+                        android:layout_width="@dimen/player_name_size_match"
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder"
                         android:textAlignment="textEnd" />

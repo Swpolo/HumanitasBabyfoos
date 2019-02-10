@@ -47,13 +47,20 @@ public class PlayersRecyclerViewAdapter
     @Override
     public void onBindViewHolder(@NonNull PlayersRecyclerViewAdapter.ViewHolder viewHolder, int i) {
         Player player = dataset.get(i);
-        viewHolder.rank.setText(String.format(Locale.CANADA,"%4d", player.score));
-        viewHolder.playerName.setText(player.name);
-        viewHolder.playerScore.setText(
-                String.format(Locale.CANADA, "%3d / %3d : %3d%%",
+        viewHolder.rank.setText(
+                String.format(
+                        Locale.CANADA,
+                        "%4d %10s %3d / %3d : %3d%%",
+                        player.score,
+                        player.name,
                         player.matchWon, player.matchPlayed,
-                        ((int)(player.matchWon / (float)player.matchPlayed * 100)))
-        );
+                        ((int)(player.matchWon / (float)player.matchPlayed * 100))));
+//        viewHolder.playerName.setText(player.name);
+//        viewHolder.playerScore.setText(
+//                String.format(Locale.CANADA, "%3d / %3d : %3d%%",
+//                        player.matchWon, player.matchPlayed,
+//                        ((int)(player.matchWon / (float)player.matchPlayed * 100)))
+//        );
     }
 
     @Override
