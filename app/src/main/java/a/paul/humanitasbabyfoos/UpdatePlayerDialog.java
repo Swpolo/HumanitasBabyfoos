@@ -81,8 +81,8 @@ public class UpdatePlayerDialog extends DialogFragment {
 
         ArrayList<String> playersList = new ArrayList<>();
 
-        for(int i = 0; i < MainActivity.playerList.size(); i++) {
-            playersList.add(MainActivity.playerList.get(i).name);
+        for(int i = 0; i < MainActivity.playersList.size(); i++) {
+            playersList.add(MainActivity.playersList.get(i).name);
         }
         ArrayAdapter<String> playersAdapter = new ArrayAdapter<>(this.getActivity(),
                 android.R.layout.simple_dropdown_item_1line, playersList);

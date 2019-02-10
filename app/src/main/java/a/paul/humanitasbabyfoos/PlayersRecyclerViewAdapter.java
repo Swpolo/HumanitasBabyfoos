@@ -58,6 +58,7 @@ public class PlayersRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
+        if (dataset == null) return 0;
         return dataset.size();
     }
 

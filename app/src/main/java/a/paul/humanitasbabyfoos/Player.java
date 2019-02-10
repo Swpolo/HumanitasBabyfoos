@@ -9,6 +9,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.score = 1500;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -17,14 +18,17 @@ public class Player {
     @ColumnInfo(name = "name")
     public String name;
 
+    @ColumnInfo(name = "score")
+    public int score;
+
     @ColumnInfo(name = "match_played")
     public int matchPlayed;
 
     @ColumnInfo(name = "match_won")
     public int matchWon;
 
-    @ColumnInfo(name = "as_defencer")
-    public int asDefencer;
+    @ColumnInfo(name = "as_defender")
+    public int asDefender;
 
     @ColumnInfo(name = "as_attacker")
     public int asAttacker;

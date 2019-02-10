@@ -6,9 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,10 +26,11 @@ public class MainActivity
     private BabyfootDatabase db;
     private PlayerDao playerDao;
     private MatchDao matchDao;
-    public static ArrayList<Player> playerList;
+    public static ArrayList<Player> playersList;
     private ArrayList<Match> matchList;
 
     MatchesFragment matchesFragment;
+    PlayersFragment playersFragment;
 
     RecyclerView playersView;
     PlayersRecyclerViewAdapter playerAdapter;
@@ -47,23 +45,18 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         matchList = new ArrayList<>();
-        playerList = new ArrayList<>();
+        playersList = new ArrayList<>();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         matchesFragment = new MatchesFragment();
-        matchesFragment.setMatchesAdapter(getApplicationContext(), playerList, matchList);
+        matchesFragment.setMatchesAdapter(getApplicationContext(), playersList, matchList);
         fragmentTransaction.add(R.id.matches_fragment, matchesFragment);
+
+        playersFragment = new PlayersFragment();
+        playersFragment.setPlayersAdapter(playersList);
+        fragmentTransaction.add(R.id.players_fragment, playersFragment);
         fragmentTransaction.commit();
-
-        playersView = findViewById(R.id.players_recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        playersView.setLayoutManager(mLayoutManager);
-        playersView.setItemAnimator(new DefaultItemAnimator());
-        playersView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        playerAdapter = new PlayersRecyclerViewAdapter(playerList);
-        playersView.setAdapter(playerAdapter);
 
         addPlayerDialog = new AddPlayerDialog();
         updatePlayerDialog = new UpdatePlayerDialog();
@@ -75,12 +68,13 @@ public class MainActivity
         super.onResume();
 
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 db = Room.databaseBuilder(getApplicationContext(),
-                        BabyfootDatabase.class, "babyfoos-database").build();
+                        BabyfootDatabase.class, "babyfoos-database")
+                        .fallbackToDestructiveMigration()
+                        .build();
 
                 playerDao = db.playerDao();
                 matchDao = db.matchDao();
@@ -150,14 +144,14 @@ public class MainActivity
     }
 
     private void updatePlayers(final Player... players) {
-        if(playerList == null) return;
+        if(playersList == null) return;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(players != null) playerDao.updatePlayers(players);
-                playerList.clear();
-                playerList.addAll(playerDao.getAll());
-                Collections.sort(playerList, new Comparator<Player>() {
+                playersList.clear();
+                playersList.addAll(playerDao.getAll());
+                Collections.sort(playersList, new Comparator<Player>() {
                     @Override
                     public int compare(Player o1, Player o2) {
                         float ratioO1 = o1.matchWon/(float)o1.matchPlayed;
@@ -168,8 +162,7 @@ public class MainActivity
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        playersView.setAdapter(playerAdapter);
-                        playerAdapter.notifyDataSetChanged();
+                        playersFragment.updatePlayers();
                     }
                 });
             }
@@ -233,7 +226,7 @@ public class MainActivity
                 player.name = newName;
                 playerDao.updatePlayers(player);
                 //noinspection ConfusingArgumentToVarargsMethod
-                updatePlayers(null);
+                updatePlayers();
                 showToast("Player updated");
             }
         }).start();
@@ -319,13 +312,13 @@ public class MainActivity
                     attackBlue.asAttacker++;
 
                     defenceBlue.matchPlayed++;
-                    defenceBlue.asDefencer++;
+                    defenceBlue.asDefender++;
 
                     attackRed.matchPlayed++;
                     attackRed.asAttacker++;
 
                     defenceRed.matchPlayed++;
-                    defenceRed.asDefencer++;
+                    defenceRed.asDefender++;
 
                 } catch (NullPointerException e) {
                     showToast("Couldn't add match: invalids players");
