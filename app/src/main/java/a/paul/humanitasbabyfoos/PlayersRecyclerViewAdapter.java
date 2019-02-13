@@ -50,7 +50,7 @@ public class PlayersRecyclerViewAdapter
         viewHolder.rank.setText(
                 String.format(
                         Locale.CANADA,
-                        "%4d %10s %3d / %3d : %3d%%",
+                        "%4d %-10s %3d / %3d : %3d%%",
                         player.score,
                         player.name,
                         player.matchWon, player.matchPlayed,

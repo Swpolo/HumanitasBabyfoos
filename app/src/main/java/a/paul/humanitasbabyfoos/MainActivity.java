@@ -3,13 +3,19 @@ package a.paul.humanitasbabyfoos;
 import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,10 +28,15 @@ public class MainActivity
         implements AddPlayerDialog.Listener,
                     UpdatePlayerDialog.Listener,
                     AddMatchDialog.Listener {
+    
+    private static final String TAG = "Foosball";
 
-    private static final int SORT_ELO = 0;
-    private static final int SORT_RATIO = 1;
-    private int playerSort = SORT_ELO;
+    private static final int SORT_HIDE = 0;
+    private static final int SORT_SHOW = 1;
+    private static final int SORT_ELO = 2;
+    private static final int SORT_RATIO = 3;
+    private int playerSort;
+    private int matchesSort;
 
     private BabyfootDatabase db;
     private PlayerDao playerDao;
@@ -33,6 +44,11 @@ public class MainActivity
     public static ArrayList<Player> playersList;
     private ArrayList<Match> matchList;
 
+    ConstraintSet cs;
+    ConstraintLayout layout;
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
     MatchesFragment matchesFragment;
     PlayersFragment playersFragment;
 
@@ -51,8 +67,21 @@ public class MainActivity
         matchList = new ArrayList<>();
         playersList = new ArrayList<>();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        playerSort = SORT_ELO;
+        matchesSort = SORT_SHOW;
+
+
+
+        layout = findViewById(R.id.main_layout);
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
         matchesFragment = new MatchesFragment();
         matchesFragment.setMatchesAdapter(getApplicationContext(), playersList, matchList);
         fragmentTransaction.add(R.id.matches_fragment, matchesFragment);
@@ -65,11 +94,6 @@ public class MainActivity
         addPlayerDialog = new AddPlayerDialog();
         updatePlayerDialog = new UpdatePlayerDialog();
         addMatchDialog = new AddMatchDialog();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
 
         new Thread(new Runnable() {
@@ -168,7 +192,9 @@ public class MainActivity
                         @Override
                         public int compare(Player o1, Player o2) {
                             float ratioO1 = o1.matchWon / (float) o1.matchPlayed;
+                            if (o1.matchPlayed == 0) ratioO1 = 0;
                             float ratioO2 = o2.matchWon / (float) o2.matchPlayed;
+                            if (o2.matchPlayed == 0) ratioO2 = 0;
                             return Float.compare(ratioO2, ratioO1);
                         }
                     });
@@ -348,6 +374,64 @@ public class MainActivity
                 updatePlayers(attackBlue, defenceBlue, attackRed, defenceRed);
             }
         }).start();
+    }
+
+    public void playersListButtonClick(View v) {
+        View vf = findViewById(R.id.players_layout);
+        Button button = (Button)v;
+        switch (playerSort) {
+            case SORT_HIDE:
+                vf.setVisibility(View.VISIBLE);
+                fragmentManager.beginTransaction()
+                        .show(playersFragment)
+                        .commit();
+                playerSort = SORT_ELO;
+                button.setText(R.string.sort_players_elo);
+                updatePlayers();
+                break;
+
+            case SORT_ELO:
+                playerSort = SORT_RATIO;
+                button.setText(R.string.sort_players_ratio);
+                updatePlayers();
+                break;
+
+            case SORT_RATIO:
+                fragmentManager.beginTransaction()
+                        .hide(playersFragment)
+                        .commit();
+                vf.setVisibility(View.GONE);
+                playerSort = SORT_HIDE;
+                button.setText(R.string.sort_players_hidden);
+                break;
+        }
+
+    }
+    public void matchesListButtonClick(View v) {
+        Button button = (Button)v;
+        if (matchesSort == SORT_HIDE) {
+            Log.d(TAG, "matchesListButtonClick: show");
+            matchesSort = SORT_SHOW;
+            button.setText(R.string.sort_matches_time);
+
+            View vf = findViewById(R.id.matches_layout);
+            vf.setVisibility(View.VISIBLE);
+//            showFragment(matchesFragment);
+            fragmentManager.beginTransaction()
+                    .add(R.id.matches_fragment, matchesFragment)
+                    .commit();
+        } else {
+            Log.d(TAG, "matchesListButtonClick: hide");
+            matchesSort = SORT_HIDE;
+            button.setText(R.string.sort_matches_hidden);
+//            hideFragment(matchesFragment);
+            fragmentManager.beginTransaction()
+                    .remove(matchesFragment)
+                    .commit();
+
+            View vf = findViewById(R.id.matches_layout);
+            vf.setVisibility(View.GONE);
+        }
     }
 
     private void showToast(final String message) {

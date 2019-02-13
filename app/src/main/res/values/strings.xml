@@ -25,4 +25,9 @@
     <string name="placeholder">Placeholder</string>
     <string name="defense">Defense</string>
     <string name="attack">Attack</string>
+    <string name="sort_players_elo">players: elo</string>
+    <string name="sort_players_ratio">players: ratio</string>
+    <string name="sort_players_hidden">players: hidden</string>
+    <string name="sort_matches_time">matches: time</string>
+    <string name="sort_matches_hidden">matches: hidden</string>
 </resources>
