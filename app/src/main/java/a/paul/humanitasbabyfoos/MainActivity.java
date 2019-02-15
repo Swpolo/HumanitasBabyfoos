@@ -76,8 +76,6 @@ public class MainActivity
         playerSort = SORT_ELO;
         matchesSort = SORT_SHOW;
 
-
-
         layout = findViewById(R.id.main_layout);
 
         fragmentManager = getSupportFragmentManager();
@@ -111,6 +109,15 @@ public class MainActivity
                 updatePlayers();
             }
         }).start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        fragmentManager.beginTransaction()
+                .remove(matchesFragment)
+                .remove(playersFragment)
+                .commitNow();
     }
 
     @Override
