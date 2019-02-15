@@ -1,39 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_root"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/player_rank"
         style="@style/player_brief_style"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/rank"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Rank"
+        android:textAlignment="center"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="50dp" />
+
+    <TextView
+        android:id="@+id/player_elo"
+        style="@style/player_brief_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="ELO"
+        android:textAlignment="textEnd"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/player_rank"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/player_rank"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="109dp" />
 
     <TextView
         android:id="@+id/player_name"
         style="@style/player_brief_style"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="@+id/player_elo"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/player_elo"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/player_rank"
-        app:layout_constraintStart_toEndOf="@+id/player_rank" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="185dp" />
 
     <TextView
-        android:id="@+id/player_score"
+        android:id="@+id/player_victory"
         style="@style/player_brief_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Wins"
+        android:textAlignment="textEnd"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/player_name"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/player_name" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/player_name"
-        app:layout_constraintStart_toEndOf="@+id/player_name" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="133dp" />
+
+    <TextView
+        android:id="@+id/player_matches"
+        style="@style/player_brief_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Games"
+        android:textAlignment="textEnd"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/player_victory"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/player_victory" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="75dp" />
+
+    <TextView
+        android:id="@+id/player_ratio"
+        style="@style/player_brief_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="W/G"
+        android:textAlignment="center"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/player_matches"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/player_matches" />
 
 </android.support.constraint.ConstraintLayout>

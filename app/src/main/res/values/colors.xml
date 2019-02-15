@@ -6,4 +6,6 @@
     <color name="red_block_background">#51C62828</color>
     <color name="red_block_border">#51C62828</color>
     <color name="blue_block_background">#6B1565C0</color>
+    <color name="player_gray_background">#27000000</color>
+    <color name="player_no_background">#00000000</color>
 </resources>

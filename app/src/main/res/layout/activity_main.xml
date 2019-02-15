@@ -19,21 +19,23 @@
 
         <Button
             android:id="@+id/player_list_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="playersListButtonClick"
-            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/sort_players_elo" />
 
         <Button
             android:id="@+id/match_list_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:lineSpacingExtra="8sp"
             android:onClick="matchesListButtonClick"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/sort_matches_time" />
+            android:text="@string/sort_matches_time"
+            android:visibility="visible" />
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout

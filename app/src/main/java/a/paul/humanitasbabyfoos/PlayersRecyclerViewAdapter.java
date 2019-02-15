@@ -1,6 +1,8 @@
 package a.paul.humanitasbabyfoos;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +15,41 @@ import java.util.Locale;
 public class PlayersRecyclerViewAdapter
         extends RecyclerView.Adapter<PlayersRecyclerViewAdapter.ViewHolder> {
 
+    private int grayBackgroundColor;
+    private int noBackgroundColor;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public ConstraintLayout root;
         public TextView rank;
-        public TextView playerName;
-        public TextView playerScore;
+        public TextView elo;
+        public TextView name;
+        public TextView wins;
+        public TextView matches;
+        public TextView ratio;
 
         public ViewHolder(View v) {
             super(v);
+            root = v.findViewById(R.id.player_root);
             rank = v.findViewById(R.id.player_rank);
-            playerName = v.findViewById(R.id.player_name);
-            playerScore = v.findViewById(R.id.player_score);
+            elo = v.findViewById(R.id.player_elo);
+            name = v.findViewById(R.id.player_name);
+            wins = v.findViewById(R.id.player_victory);
+            matches = v.findViewById(R.id.player_matches);
+            ratio = v.findViewById(R.id.player_ratio);
         }
     }
 
-    private List<Player> dataset;
+    private List<Player> players;
 
-    public PlayersRecyclerViewAdapter(List<Player> dataset) {
-        this.dataset = dataset;
+    public PlayersRecyclerViewAdapter(List<Player> players) {
+        this.players = players;
+    }
+
+    public void setGraybackgroundColor(int color) {
+        grayBackgroundColor = color;
+    }
+    public void setNoBackgroundColor(int color) {
+        noBackgroundColor = color;
     }
 
     @NonNull
@@ -46,27 +66,30 @@ public class PlayersRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull PlayersRecyclerViewAdapter.ViewHolder viewHolder, int i) {
-        Player player = dataset.get(i);
-        viewHolder.rank.setText(
-                String.format(
-                        Locale.CANADA,
-                        "%4d %-10s %3d / %3d : %3d%%",
-                        player.score,
-                        player.name,
-                        player.matchWon, player.matchPlayed,
-                        ((int)(player.matchWon / (float)player.matchPlayed * 100))));
-//        viewHolder.playerName.setText(player.name);
-//        viewHolder.playerScore.setText(
-//                String.format(Locale.CANADA, "%3d / %3d : %3d%%",
-//                        player.matchWon, player.matchPlayed,
-//                        ((int)(player.matchWon / (float)player.matchPlayed * 100)))
-//        );
+        Player player = players.get(i);
+        if (i%2 == 1) {
+            viewHolder.root.setBackgroundColor(grayBackgroundColor);
+        } else {
+            viewHolder.root.setBackgroundColor(noBackgroundColor);
+        }
+
+        int ratio = player.matchPlayed != 0
+                ? player.matchWon * 100 / player.matchPlayed
+                : 0;
+        viewHolder.rank.setText(String.format(Locale.CANADA, "%2d", i + 1));
+        viewHolder.elo.setText(
+                String.format(Locale.CANADA, "%4d", player.score));
+        viewHolder.name.setText(player.name);
+        viewHolder.wins.setText(String.format(Locale.CANADA, "%2d", player.matchWon));
+        viewHolder.matches.setText(String.format(Locale.CANADA, "%2d", player.matchPlayed));
+        viewHolder.ratio.setText(
+                String.format(Locale.CANADA, "%3d%%", ratio));
     }
 
     @Override
     public int getItemCount() {
-        if (dataset == null) return 0;
-        return dataset.size();
+        if (players == null) return 0;
+        return players.size();
     }
 
 }

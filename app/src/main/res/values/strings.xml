@@ -16,7 +16,6 @@
     <string name="red_defender">Red Defender…</string>
     <string name="rank">Rank</string>
     <string name="player">Player</string>
-    <string name="default_stats">0/0 : 0.0</string>
     <string name="player_name">Player Name…</string>
     <string name="initials_wins">Initials Wins</string>
     <string name="initial_matchs">Initial Matchs</string>
@@ -30,4 +29,8 @@
     <string name="sort_players_hidden">players: hidden</string>
     <string name="sort_matches_time">matches: time</string>
     <string name="sort_matches_hidden">matches: hidden</string>
+    <string name="placeholder_numbers_tens">99</string>
+    <string name="placeholder_numbers_thousands">9999</string>
+    <string name="placeholder_letter_to_l">abcdefghijkl</string>
+    <string name="placeholder_percent">100%</string>
 </resources>

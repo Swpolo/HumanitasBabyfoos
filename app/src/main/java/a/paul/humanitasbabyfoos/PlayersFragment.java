@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,11 +31,11 @@ public class PlayersFragment extends Fragment {
                 new LinearLayoutManager(rootView.getContext().getApplicationContext());
         playersView.setLayoutManager(mLayoutManager);
         playersView.setItemAnimator(new DefaultItemAnimator());
-        playersView.addItemDecoration(
-                new DividerItemDecoration(
-                        rootView.getContext().getApplicationContext(),
-                        LinearLayoutManager.VERTICAL));
         playersAdapter = new PlayersRecyclerViewAdapter(players);
+        playersAdapter.setGraybackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.player_gray_background));
+        playersAdapter.setNoBackgroundColor(
+                ContextCompat.getColor(getContext(), R.color.player_no_background));
         playersView.setAdapter(playersAdapter);
 
         return rootView;
